@@ -9,7 +9,12 @@ from .serializers import CourseSerializer
 class CourseViewSet(viewsets.ViewSet):
 
     def list(self, request):
-        courses = CourseModel.objects.all()
+        courses = CourseModel.objects.filter(Q(category=request.data["Bank"]) |
+                                             Q(category=request.data["Investment"]) |
+                                             Q(category=request.data["Credit"]) |
+                                             Q(category=request.data["Currency"]) |
+                                             Q(category=request.data["Stock"]) |
+                                             Q(category=request.data["Money"]))
         serializer = CourseSerializer(courses, many=True)
 
         return Response(serializer.data)
