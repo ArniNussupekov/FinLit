@@ -7,11 +7,6 @@ from user.serializers import UserSerializer
 
 
 class UserViewSet(viewsets.ViewSet):
-    def list(self, request):
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-
-        return Response(serializer.data)
 
     @action(detail=False, methods=['post'], name="register")
     def register(self, request):
