@@ -9,6 +9,7 @@ from .serializers import CourseSerializer
 class CourseViewSet(viewsets.ViewSet):
 
     def list(self, request):
+        module = request.query_params.get("Module")
         filters = {
             "bank": request.query_params.get("Bank", None),
             "investment": request.query_params.get("Investment", None),
@@ -24,6 +25,7 @@ class CourseViewSet(viewsets.ViewSet):
                 query |= Q(category=value)
 
         courses = CourseModel.objects.filter(query)
+        courses = courses.filter(module=module)
         serializer = CourseSerializer(courses, many=True)
 
         return Response(serializer.data)
