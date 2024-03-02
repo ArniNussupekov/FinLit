@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from user.models import User
-from user.serializers import UserSerializer
+from user.serializers import UserSerializer, UserMiniSerializer
 
 
 class ProfileViewSet(viewsets.ViewSet):
@@ -32,3 +32,13 @@ class ProfileViewSet(viewsets.ViewSet):
         serializer.save()
 
         return Response({"message": "Success", "data": serializer.data})
+
+    @action(detail=False, methods=['get'])
+    def get_user_data(self, request):
+        user_id = request.query_params.get("user_id", None)
+        try:
+            user = User.objects.get(id=user_id)
+        except Exception as e:
+            raise "Profile does not exist, uebok"
+
+        return Response(UserMiniSerializer(user).data)

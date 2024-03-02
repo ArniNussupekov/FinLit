@@ -2,8 +2,8 @@ from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from .models import CourseModel
-from .serializers import CourseSerializer
+from course.models import CourseModel
+from course.serializers import CourseSerializer
 
 
 class CourseViewSet(viewsets.ViewSet):
@@ -38,7 +38,10 @@ class CourseViewSet(viewsets.ViewSet):
         return Response({"success": True, "data": serializer.data})
 
     def retrieve(self, request, pk):
-        course = CourseModel.objects.get(id=pk)
+        try:
+            course = CourseModel.objects.get(id=pk)
+        except Exception as e:
+            raise "Object not found"
         serializer = CourseSerializer(course)
 
         return Response(serializer.data)
