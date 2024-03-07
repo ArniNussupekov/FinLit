@@ -1,8 +1,10 @@
 from django.db.models import Q
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from course.models import CourseModel
+from user.models import User
 from course.serializers import CourseSerializer
 
 
@@ -59,3 +61,13 @@ class CourseViewSet(viewsets.ViewSet):
         course.delete()
 
         return Response({"Success": True})
+
+    @action(detail=True, methods=['put'])
+    def add_bookmark(self, request, pk):
+        user_id = request.query_params.get("user_id")
+        user = User.objects.get(id=user_id)
+        course = CourseModel.objects.get(id=pk)
+
+        user.starred_courses.add(course)
+
+        return Response({"Success:": True})

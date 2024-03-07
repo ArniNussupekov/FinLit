@@ -1,5 +1,3 @@
-from django.urls import path, include
-
 from user.auth.auth import UserViewSet
 from user.profile.profile import ProfileViewSet
 from rest_framework.routers import DefaultRouter

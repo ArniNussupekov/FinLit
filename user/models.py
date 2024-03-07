@@ -9,5 +9,13 @@ class User(models.Model):
     phone = models.CharField(max_length=10, blank=True, null=True)
     password = models.CharField(max_length=255)
     age = models.IntegerField(blank=True, null=True)
+    starred_courses = models.ManyToManyField(CourseModel, blank=True)
 
-    courses = models.ForeignKey(CourseModel, on_delete=models.DO_NOTHING, null=True)
+
+class CourseProgress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=False)
+    course = models.ForeignKey(CourseModel, on_delete=models.DO_NOTHING, null=False)
+    is_completed = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('user', 'course',)
