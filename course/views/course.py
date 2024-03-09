@@ -64,7 +64,12 @@ class CourseViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=["get"])
     def get_bookmark(self, request):
-        pass
+        user_id = request.query_params.get("user_id")
+        user = User.objects.get(id=user_id)
+        serializer = CourseSerializer(user.bookmarked_courses, many=True)
+
+        return Response(serializer.data)
+
 
     # Make refactor
     @action(detail=True, methods=['put'])
