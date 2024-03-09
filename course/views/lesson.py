@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from course.models import LessonModel
+from course.models import LessonModel, CourseModel
 from course.serializers import LessonSerializer
 
 
@@ -31,4 +31,8 @@ class LessonViewSet(viewsets.ViewSet):
 
         return Response({"message": True, "data": serializer.data})
 
+    @action(detail=True, methods=["get"])
+    def get_lessons(self, request, pk):
+        lessons = LessonModel.objects.filter(course_id=pk)
 
+        return Response(LessonSerializer(lessons, many=True).data)

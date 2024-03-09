@@ -10,7 +10,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class CourseRetrieveSerializer(serializers.ModelSerializer):
-    is_starred = serializers.SerializerMethodField(method_name="get_is_starred")
+    is_bookmarked = serializers.SerializerMethodField(method_name="get_is_starred")
 
     def get_is_starred(self, course):
         user_id = self.context['user_id']
@@ -24,6 +24,7 @@ class CourseRetrieveSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseModel
         fields = '__all__'
+
 
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
