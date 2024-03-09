@@ -19,6 +19,14 @@ class LessonViewSet(viewsets.ViewSet):
 
         return Response({"success": True, "data": serializer.data})
 
+    def retrieve(self, request, pk):
+        try:
+            lesson = LessonModel.objects.get(id=pk)
+        except Exception as e:
+            raise "Not Found"
+
+        return Response(LessonSerializer(lesson).data)
+
     def update(self, request, pk):
         try:
             lesson = LessonModel.objects.get(id=pk)
