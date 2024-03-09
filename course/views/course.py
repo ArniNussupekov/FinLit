@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from course.models import CourseModel
-from user.models import User, CourseProgress
+from user.models import User
 from course.serializers import CourseSerializer
 
 
@@ -70,33 +70,27 @@ class CourseViewSet(viewsets.ViewSet):
     @action(detail=True, methods=['put'])
     def add_bookmark(self, request, pk):
         user_id = request.query_params.get("user_id")
-        user = User.objects.get(id=user_id)
-        course = CourseModel.objects.get(id=pk)
 
-        if course is None or user is None:
-            raise "No such user or course"
+        try:
+            user = User.objects.get(id=user_id)
+            course = CourseModel.objects.get(id=pk)
+        except Exception as e:
+            raise e
 
-        user_course = CourseProgress.objects.filter(Q(user=user) & Q(course=course)).first()
-        if user_course is None:
-            user_course = CourseProgress.objects.create(user=user, course=course)
-
-        user_course.is_starred = True
+        user.bookmarked_courses.add(course)
 
         return Response({"Success:": True})
 
     @action(detail=True, methods=['put'])
     def remove_bookmark(self, request, pk):
         user_id = request.query_params.get("user_id")
-        user = User.objects.get(id=user_id)
-        course = CourseModel.objects.get(id=pk)
 
-        if course is None or user is None:
-            raise "No such user or course"
+        try:
+            user = User.objects.get(id=user_id)
+            course = CourseModel.objects.get(id=pk)
+        except Exception as e:
+            raise e
 
-        user_course = CourseProgress.objects.filter(Q(user=user) & Q(course=course)).first()
-        if user_course is None:
-            return "Wasn't is Bookmark"
-
-        user_course.is_starred = False
+        user.bookmarked_courses.remove(course)
 
         return Response({"Success:": True})
