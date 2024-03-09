@@ -10,8 +10,8 @@ class CourseModel(models.Model):
   
 
 class LessonModel(models.Model):
+    lesson_num = models.IntegerField(null=True, blank=True)
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     content = models.TextField()
     course = models.ForeignKey(CourseModel, on_delete=models.CASCADE, null=True)
-
