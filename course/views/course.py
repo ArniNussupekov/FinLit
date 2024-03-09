@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from course.models import CourseModel
 from user.models import User
-from course.serializers import CourseSerializer
+from course.serializers import CourseSerializer, CourseRetrieveSerializer
 
 
 class CourseViewSet(viewsets.ViewSet):
@@ -40,11 +40,13 @@ class CourseViewSet(viewsets.ViewSet):
         return Response({"success": True, "data": serializer.data})
 
     def retrieve(self, request, pk):
+        user_id = request.query_params.get("user_id")
+
         try:
             course = CourseModel.objects.get(id=pk)
         except Exception as e:
             raise "Object not found"
-        serializer = CourseSerializer(course)
+        serializer = CourseRetrieveSerializer(course, context={'user_id': user_id})
 
         return Response(serializer.data)
 
