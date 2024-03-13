@@ -1,22 +1,16 @@
+import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-(ben93h+m#&#ji4-(_d7!zar5hkd1jhzh%zi&1xqt_(4v+6lhu'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# Make this False in Prod
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -63,14 +57,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'FinLit.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.environ.get('DB_DRIVER', 'django.db.backends.postgresql'),
+        'USER': os.environ.get('PG_USER', 'postgres'),
+        'PASSWORD': os.environ.get('PG_PASSWORD', 'postgres'),
+        'NAME': os.environ.get('PG_DB', 'postgres'),
+        'PORT': os.environ.get('PG_PORT', '5432'),
+        'HOST': os.environ.get('PG_HOST', 'localhost'),
     }
 }
 

@@ -9,7 +9,7 @@ class User(models.Model):
     phone = models.CharField(max_length=10, blank=True, null=True)
     password = models.CharField(max_length=255)
     age = models.IntegerField(blank=True, null=True)
-    bookmarked_courses = models.ManyToManyField(CourseModel, null=True)
+    bookmarked_courses = models.ManyToManyField(CourseModel)
 
 
 class CourseProgress(models.Model):
