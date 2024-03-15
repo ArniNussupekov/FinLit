@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from course.models import LessonModel, CourseModel
+from course.models import LessonModel
 from course.serializers import LessonSerializer
 
 
