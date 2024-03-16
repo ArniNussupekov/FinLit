@@ -7,6 +7,7 @@ class CourseModel(models.Model):
     rating = models.FloatField(default=0)
     module = models.IntegerField(default=1)
     category = models.CharField(max_length=255, default="Money")
+    course_num = models.IntegerField(default=0)
   
 
 class LessonModel(models.Model):
