@@ -17,6 +17,7 @@ class LessonModel(models.Model):
     course = models.ForeignKey(CourseModel, on_delete=models.CASCADE, null=True)
 
 
+# some shit logic
 class QuizModel(models.Model):
     course_id = models.IntegerField(default=0, null=True)
     question = models.CharField(max_length=255, null=True)
@@ -25,3 +26,9 @@ class QuizModel(models.Model):
     answer_three = models.CharField(max_length=255, null=True)
     answer_four = models.CharField(max_length=255, null=True)
     correct_answer = models.IntegerField(default=0, null=True)
+
+
+class QuizProgress(models.Model):
+    user_id = models.IntegerField(default=0, null=True)
+    course = models.IntegerField(default=0, null=True)
+    grade = models.FloatField(default=0, null=True)

@@ -4,6 +4,15 @@ services:
   web:
     container_name: FinLit
     build: .
+    command: >
+      sh -c 'echo "Making migrations" &&
+             python manage.py makemigrations &&
+             echo "===============================" &&
+             echo "Migrating" &&
+             python manage.py migrate &&
+             echo "===============================" &&
+             echo "Running------" &&
+             python manage.py runserver 0.0.0.0:8000'
     environment:
       - PG_USER=postgres
       - PG_PASSWORD=postgres
