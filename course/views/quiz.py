@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from course.models import QuizModel, CourseModel, QuizProgress
 from user.models import User
-from course.serializers import QuizSerializer, QuizProgressSerializer, LeaderBoardSerializer
+from course.serializers import QuizSerializer, QuizProgressSerializer, LeaderBoardSerializer, QuizAnswerSerializer
 
 
 class QuizViewSet(viewsets.ViewSet):
@@ -16,6 +16,14 @@ class QuizViewSet(viewsets.ViewSet):
 
     def create(self, request):
         serializer = QuizSerializer(data=request.data)
+        serializer.is_valid()
+        serializer.save()
+
+        return Response({"success": True, "data": serializer.data})
+
+    @action(detail=False, methods=['post'])
+    def add_answers(self, request):
+        serializer = QuizAnswerSerializer(data=request.data)
         serializer.is_valid()
         serializer.save()
 

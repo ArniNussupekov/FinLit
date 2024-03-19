@@ -22,11 +22,12 @@ class LessonModel(models.Model):
 class QuizModel(models.Model):
     course_id = models.IntegerField(default=0, null=True)
     question = models.CharField(max_length=255, null=True)
-    answer_one = models.CharField(max_length=255, null=True)
-    answer_two = models.CharField(max_length=255, null=True)
-    answer_three = models.CharField(max_length=255, null=True)
-    answer_four = models.CharField(max_length=255, null=True)
-    correct_answer = models.IntegerField(default=0, null=True)
+
+
+class QuizAnswerModel(models.Model):
+    quiz = models.ForeignKey(QuizModel, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
+    is_correct = models.BooleanField(default=True)
 
 
 class QuizProgress(models.Model):
