@@ -28,9 +28,3 @@ class QuizAnswerModel(models.Model):
     quiz = models.ForeignKey(QuizModel, on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
     is_correct = models.BooleanField(default=True)
-
-
-class QuizProgress(models.Model):
-    user_id = models.IntegerField(default=0, null=True)
-    course = models.IntegerField(default=0, null=True)
-    grade = models.FloatField(default=0, null=True)

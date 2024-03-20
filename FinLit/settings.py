@@ -23,6 +23,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'course',
     'user',
+    'administrator',
+    'progress',
 ]
 
 MIDDLEWARE = [
