@@ -1,10 +1,8 @@
 from rest_framework import viewsets
-from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from course.models import QuizProgress
-from user.models import User
-from course.serializers import QuizSerializer, QuizProgressSerializer, LeaderBoardSerializer
+from course.serializers import QuizProgressSerializer
 
 
 class QuizProgressViewSet(viewsets.ViewSet):

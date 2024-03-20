@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from rest_framework import viewsets, pagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -80,6 +82,10 @@ class QuizViewSet(viewsets.ViewSet):
             course = CourseModel.objects.get(id=pk)
         except Exception as e:
             raise e
+
+        checker = QuizProgress.objects.filter(Q(course=course.id) & Q(user_id=user.id))
+        if checker:
+            raise "QuizProgress is already exists!"
 
         data = {"course": course.id, "user_id": user_id, "grade": request.data["grade"]}
         serializer = QuizProgressSerializer(data=data)
