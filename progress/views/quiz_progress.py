@@ -15,7 +15,7 @@ from progress.serializers import QuizProgressSerializer, LeaderBoardSerializer
 class QuizProgressViewSet(viewsets.ViewSet):
     @action(detail=True, methods=['post'])
     def submit(self, request, pk):
-        # Check if exist
+        # Todo make tool for checking user and course
         user_id = request.query_params.get("user_id")
         try:
             user = User.objects.get(id=user_id)
@@ -23,11 +23,11 @@ class QuizProgressViewSet(viewsets.ViewSet):
         except Exception as e:
             raise e
 
-        checker = QuizProgress.objects.filter(Q(course=course.id) & Q(user_id=user.id))
+        checker = QuizProgress.objects.filter(Q(course_id=course.id) & Q(user_id=user.id))
         if checker:
             raise "QuizProgress is already exists!"
 
-        data = {"course": course.id, "user_id": user_id, "grade": request.data["grade"]}
+        data = {"course_id": course.id, "user_id": user_id, "grade": request.data["grade"]}
         serializer = QuizProgressSerializer(data=data)
         serializer.is_valid()
         serializer.save()
@@ -43,8 +43,7 @@ class QuizProgressViewSet(viewsets.ViewSet):
             raise e
 
         progress = QuizProgress.objects.filter(user_id=user_id)
-        course_ids = progress.values_list('course', flat=True)
+        course_ids = progress.values_list('course_id', flat=True)
         courses = CourseModel.objects.filter(id__in=course_ids)
-        print(courses)
 
         return Response(LeaderBoardSerializer(courses, context={'user_id': user_id}, many=True).data)
