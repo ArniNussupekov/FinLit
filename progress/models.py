@@ -10,6 +10,7 @@ class QuizProgress(models.Model):
 class CourseProgress(models.Model):
     user_id = models.IntegerField(default=0)
     course_id = models.IntegerField(default=0)
+    rating = models.FloatField(default=0)
     percent = models.FloatField(default=0)
     quiz_done = models.BooleanField
 

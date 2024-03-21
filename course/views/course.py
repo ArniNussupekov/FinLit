@@ -89,7 +89,6 @@ class CourseViewSet(viewsets.ViewSet):
 
         return Response(serializer.data)
 
-
     # Make refactor
     @action(detail=True, methods=['put'])
     def add_bookmark(self, request, pk):
