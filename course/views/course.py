@@ -7,7 +7,7 @@ from course.models import CourseModel
 from user.models import User
 from progress.models import CourseProgress
 
-from course.serializers import CourseSerializer, CourseRetrieveSerializer
+from course.serializers import CourseSerializer, CourseRetrieveSerializer, MyCoursesSerializer
 
 
 class CourseViewSet(viewsets.ViewSet):
@@ -75,11 +75,11 @@ class CourseViewSet(viewsets.ViewSet):
         except Exception as e:
             raise e
 
-        progress = CourseProgress.objects.filter(Q(user_id=user_id) & Q(status=CourseProgress.Status.LEARNING))
+        progress = CourseProgress.objects.filter(user_id=user_id)
         course_ids = progress.values_list('course_id', flat=True)
         courses = CourseModel.objects.filter(id__in=course_ids)
 
-        return Response(CourseSerializer(courses, many=True).data)
+        return Response(MyCoursesSerializer(courses, context={"user_id": user_id}, many=True).data)
 
     @action(detail=False, methods=["get"])
     def get_bookmark(self, request):

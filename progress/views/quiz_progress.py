@@ -20,7 +20,7 @@ class QuizProgressViewSet(viewsets.ViewSet):
         except Exception as e:
             raise "No such course in Progress"
 
-        data = {"is_completed": True}
+        data = {"is_completed": True, "status": CourseProgress.Status.COMPLETED}
         serializer = CourseProgressSerializer(instance=progress, data=data, partial=True)
         serializer.is_valid()
         serializer.save()

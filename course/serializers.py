@@ -6,6 +6,26 @@ from progress.models import CourseProgress
 from user.models import User
 
 
+class MyCoursesSerializer(serializers.ModelSerializer):
+    status = serializers.SerializerMethodField(method_name="get_status")
+
+    def get_status(self, course):
+        try:
+            user_id = self.context['user_id']
+            course_id = course.id
+            progress = CourseProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id)).first()
+        except Exception as e:
+            raise e
+        if progress:
+            return progress.status
+        else:
+            return False
+
+    class Meta:
+        model = CourseModel
+        fields = '__all__'
+
+
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseModel
@@ -28,10 +48,7 @@ class CourseRetrieveSerializer(serializers.ModelSerializer):
     def get_is_completed(self, course):
         user_id = self.context['user_id']
         course_id = course.id
-        print(course_id)
-        print(user_id)
         progress = CourseProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id)).first()
-        print(progress)
         if progress:
             return progress.is_completed
         else:

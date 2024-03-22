@@ -12,7 +12,8 @@ from progress.serializers import CourseProgressSerializer, LessonProgressSeriali
 
 
 class CourseProgressViewSet(viewsets.ViewSet):
-    def check_if_joined(self, user_id, course_id):
+    @classmethod
+    def check_if_joined(cls, user_id, course_id):
         checker = CourseProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id))
 
         if checker:
