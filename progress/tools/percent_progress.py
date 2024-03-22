@@ -10,7 +10,7 @@ class CalculatePercentage:
     @classmethod
     def calculate_lesson_percentage(cls, user_id, course_id):
         lessons = LessonProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id))
-        lesson_num = LessonModel.objects.count()
+        lesson_num = LessonModel.objects.filter(course_id=course_id).count()
         max_fill = 70
         complete = lessons.count()
         fill = (100 * complete) / lesson_num
