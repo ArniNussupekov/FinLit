@@ -1,5 +1,8 @@
+from django.db.models import Q
+
 from rest_framework import serializers
 from .models import CourseModel, LessonModel, QuizModel, QuizAnswerModel
+from progress.models import CourseProgress
 from user.models import User
 
 
@@ -11,6 +14,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
 class CourseRetrieveSerializer(serializers.ModelSerializer):
     is_bookmarked = serializers.SerializerMethodField(method_name="get_is_starred")
+    is_completed = serializers.SerializerMethodField(method_name="get_is_completed")
 
     def get_is_starred(self, course):
         user_id = self.context['user_id']
@@ -18,6 +22,18 @@ class CourseRetrieveSerializer(serializers.ModelSerializer):
         user = User.objects.get(id=user_id)
         if user.bookmarked_courses.filter(id=course_id).exists():
             return True
+        else:
+            return False
+
+    def get_is_completed(self, course):
+        user_id = self.context['user_id']
+        course_id = course.id
+        print(course_id)
+        print(user_id)
+        progress = CourseProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id)).first()
+        print(progress)
+        if progress:
+            return progress.is_completed
         else:
             return False
 

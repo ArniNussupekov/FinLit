@@ -44,10 +44,6 @@ class CourseProgressViewSet(viewsets.ViewSet):
         return Response({"Message": True})
 
     @action(detail=True, methods=['post'])
-    def complete_course(self, request, pk):
-        pass
-
-    @action(detail=True, methods=['post'])
     def complete_lesson(self, request, pk):
         user_id = request.query_params.get("user_id")
         try:
