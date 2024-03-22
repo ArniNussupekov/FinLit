@@ -8,6 +8,8 @@ from progress.models import QuizProgress, CourseProgress
 from course.models import CourseModel
 from user.models import User
 
+from progress.tools.percent_progress import CalculatePercentage
+
 
 from progress.serializers import QuizProgressSerializer, LeaderBoardSerializer, CourseProgressSerializer
 
@@ -24,8 +26,8 @@ class QuizProgressViewSet(viewsets.ViewSet):
         serializer = CourseProgressSerializer(instance=progress, data=data, partial=True)
         serializer.is_valid()
         serializer.save()
-        print(serializer.is_valid())
-        return True
+
+        return progress.id
 
     @classmethod
     def get_course(cls, user_id, course_id):
@@ -50,7 +52,8 @@ class QuizProgressViewSet(viewsets.ViewSet):
         serializer.is_valid()
         serializer.save()
 
-        self.complete_course(user_id, course.id)
+        progress = self.complete_course(user_id, course.id)
+        res = CalculatePercentage.calculate_percentage(progress)
 
         return Response(serializer.data)
 

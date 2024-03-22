@@ -30,6 +30,7 @@ class CourseProgress(models.Model):
 
 class LessonProgress(models.Model):
     user_id = models.IntegerField(default=0)
+    course_id = models.IntegerField(default=0)
     lesson_id = models.IntegerField(default=0)
     course_progress = models.ForeignKey(CourseProgress, on_delete=models.CASCADE)
     is_completed = models.BooleanField(default=False)

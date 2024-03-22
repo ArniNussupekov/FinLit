@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from course.models import LessonModel
-from course.serializers import LessonSerializer
+from course.serializers import LessonSerializer, MyLessonSerializer
 
 
 class LessonViewSet(viewsets.ViewSet):
@@ -42,5 +42,6 @@ class LessonViewSet(viewsets.ViewSet):
     @action(detail=True, methods=["get"])
     def get_lessons(self, request, pk):
         lessons = LessonModel.objects.filter(course_id=pk)
+        user_id = request.query_params.get('user_id')
 
-        return Response(LessonSerializer(lessons, many=True).data)
+        return Response(MyLessonSerializer(lessons, many=True, context={"user_id": user_id}).data)
