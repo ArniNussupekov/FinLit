@@ -10,6 +10,25 @@ class LessonProgressSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ListCourseProgressSerializer(serializers.ModelSerializer):
+    course_name = serializers.SerializerMethodField(method_name="get_course_name")
+    course_level = serializers.SerializerMethodField(method_name="get_course_level")
+
+    def get_course_level(self, course_progress):
+        course = CourseModel.objects.get(id=course_progress.course_id)
+
+        return course.module
+
+    def get_course_name(self, course_progress):
+        course = CourseModel.objects.get(id=course_progress.course_id)
+
+        return course.name
+
+    class Meta:
+        model = CourseProgress
+        fields = ['course_level', 'course_name', 'percent', 'is_completed']
+
+
 class CourseProgressSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseProgress

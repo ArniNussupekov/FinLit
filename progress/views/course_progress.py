@@ -8,7 +8,7 @@ from progress.models import CourseProgress, LessonProgress
 from course.models import CourseModel, LessonModel
 from user.models import User
 
-from progress.serializers import CourseProgressSerializer, LessonProgressSerializer
+from progress.serializers import CourseProgressSerializer, LessonProgressSerializer, ListCourseProgressSerializer
 
 from progress.tools.percent_progress import CalculatePercentage
 
@@ -31,6 +31,12 @@ class CourseProgressViewSet(viewsets.ViewSet):
             return True
         else:
             return False
+
+    def list(self, request):
+        user_id = request.query_params.get("user_id")
+        progress = CourseProgress.objects.filter(user_id=user_id)
+
+        return Response(ListCourseProgressSerializer(progress, many=True).data)
 
     @action(detail=True, methods=['post'])
     def join(self, request, pk):

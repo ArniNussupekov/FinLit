@@ -9,6 +9,15 @@ from user.models import User
 class MyCoursesSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField(method_name="get_status")
     progress = serializers.SerializerMethodField(method_name="get_progress")
+    lesson_num = serializers.SerializerMethodField(method_name="get_lesson_num")
+
+    def get_lesson_num(self, course):
+        try:
+            course_id = course.id
+            lessons_num = LessonModel.objects.filter(course_id=course_id).count()
+        except Exception as e:
+            raise e
+        return lessons_num
 
     def get_status(self, course):
         try:
