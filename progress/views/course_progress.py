@@ -11,6 +11,7 @@ from user.models import User
 from progress.serializers import CourseProgressSerializer, LessonProgressSerializer, ListCourseProgressSerializer
 
 from progress.tools.percent_progress import CalculatePercentage
+from progress.tools.achievements import CalculateAchievements
 
 
 class CourseProgressViewSet(viewsets.ViewSet):
@@ -53,7 +54,8 @@ class CourseProgressViewSet(viewsets.ViewSet):
         if checker:
             raise "User is already joined!"
 
-        data = {"course_id": course.id, "user_id": user_id, "status": CourseProgress.Status.LEARNING}
+        data = {"course_id": course.id, "user_id": user_id, "status": CourseProgress.Status.LEARNING,
+                "course_level": course.module}
         print(data)
         serializer = CourseProgressSerializer(data=data)
         serializer.is_valid()
@@ -96,3 +98,14 @@ class CourseProgressViewSet(viewsets.ViewSet):
         res = CalculatePercentage.calculate_percentage(course_progress.id)
 
         return Response({"message": res})
+
+    @action(detail=False, methods=['get'])
+    def get_achievements(self, request):
+        user_id = request.query_params.get('user_id')
+
+        completed_course = CalculateAchievements.calculate_completed_course(user_id=user_id)
+        completed_modules = CalculateAchievements.calculate_complete_module(user_id=user_id)
+
+        data = {"complete_courses": completed_course, "complete_modules": completed_modules}
+
+        return Response(data)
