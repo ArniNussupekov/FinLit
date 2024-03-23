@@ -18,13 +18,15 @@ class CalculateAchievements:
                                                         & Q(course_level=3))
         completed_modules = 0
 
+
         if not completed_first and CourseProgress.objects.filter(Q(user_id=user_id) & Q(is_completed=True)
                                                                  & Q(course_level=1)):
             completed_modules += 1
-        
+
         if not completed_second and CourseProgress.objects.filter(Q(user_id=user_id) & Q(is_completed=True)
                                                         & Q(course_level=2)):
             completed_modules += 1
+
 
         if not completed_third and CourseProgress.objects.filter(Q(user_id=user_id) & Q(is_completed=True)
                                                         & Q(course_level=3)):

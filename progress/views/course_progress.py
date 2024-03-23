@@ -17,9 +17,12 @@ from progress.tools.achievements import CalculateAchievements
 class CourseProgressViewSet(viewsets.ViewSet):
     @classmethod
     def check_if_joined(cls, user_id, course_id):
-        checker = CourseProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id))
+        checker = CourseProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id)).first()
 
-        if checker:
+        print(checker)
+
+        if checker is not None:
+            print("YES")
             return True
         else:
             return False
@@ -50,13 +53,13 @@ class CourseProgressViewSet(viewsets.ViewSet):
         except Exception as e:
             raise e
 
-        checker = self.check_if_joined(course.id, user.id)
-        if checker:
+        checker = self.check_if_joined(user.id, course.id)
+        if checker is True:
             raise "User is already joined!"
 
         data = {"course_id": course.id, "user_id": user_id, "status": CourseProgress.Status.LEARNING,
                 "course_level": course.module}
-        print(data)
+
         serializer = CourseProgressSerializer(data=data)
         serializer.is_valid()
         serializer.save()
