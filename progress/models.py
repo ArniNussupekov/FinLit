@@ -1,10 +1,12 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 
 class QuizProgress(models.Model):
     user_id = models.IntegerField(default=0, null=True)
     course_id = models.IntegerField(default=0, null=True)
     grade = models.FloatField(default=0, null=True)
+    user_choices = ArrayField(models.IntegerField(), null=True)
 
 
 class CourseProgress(models.Model):

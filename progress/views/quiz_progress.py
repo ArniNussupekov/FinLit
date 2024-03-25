@@ -47,7 +47,10 @@ class QuizProgressViewSet(viewsets.ViewSet):
         user_id = request.query_params.get("user_id")
         course = self.get_course(user_id=user_id, course_id=pk)
 
-        data = {"course_id": course.id, "user_id": user_id, "grade": request.data["grade"]}
+        grade = CalculatePercentage.calculate_grade(request.data["answers"])
+
+        # Saving progress
+        data = {"course_id": course.id, "user_id": user_id, "grade": grade, "user_choices": request.data["answers"]}
         serializer = QuizProgressSerializer(data=data)
         serializer.is_valid()
         serializer.save()

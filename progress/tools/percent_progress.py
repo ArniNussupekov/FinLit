@@ -1,12 +1,26 @@
 from django.db.models import Q
 
-from progress.models import LessonProgress, QuizProgress, CourseProgress
-from course.models import LessonModel
+from progress.models import LessonProgress, CourseProgress
+from course.models import LessonModel, QuizAnswerModel
 
 from progress.serializers import CourseProgressSerializer
 
 
 class CalculatePercentage:
+    @classmethod
+    def calculate_grade(cls, data):
+        quiz_answers = QuizAnswerModel.objects.filter(id__in=data)
+        answer_count = quiz_answers.count()
+        correct_answer_num = 0
+
+        for answer in quiz_answers:
+            if answer.is_correct is True:
+                correct_answer_num += 1
+
+        percent = (float(correct_answer_num/answer_count)) * 100
+
+        return percent
+
     @classmethod
     def calculate_lesson_percentage(cls, user_id, course_id):
         lessons = LessonProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id))
