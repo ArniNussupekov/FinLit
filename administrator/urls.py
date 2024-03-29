@@ -6,7 +6,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'course', AdminCourseViewSet, basename='course')
-router.register(r'lesson', AdminLessonViewSet, basename='course')
+router.register(r'lesson', AdminLessonViewSet, basename='lesson')
 router.register(r'quiz', AdminQuizViewSet, basename='quiz')
 router.register(r'quiz_answer', AdminQuizAnswerViewSet, basename='quiz_answer')
 urlpatterns = router.urls

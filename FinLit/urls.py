@@ -7,4 +7,5 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('administrator/', include('administrator.urls')),
     path('progress/', include('progress.urls')),
+    path('simulator/', include('simulator.urls')),
 ]

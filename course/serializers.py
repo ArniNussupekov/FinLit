@@ -2,7 +2,7 @@ from django.db.models import Q
 
 from rest_framework import serializers
 from .models import CourseModel, LessonModel, QuizModel, QuizAnswerModel
-from progress.models import CourseProgress, LessonProgress
+from progress.models import CourseProgress, LessonProgress, QuizProgress
 from user.models import User
 
 
@@ -122,3 +122,16 @@ class QuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizModel
         fields = ['id', 'course_id', 'question', 'answers']
+
+
+# ToDo make logic for this
+class QuizChosenAnswerSerializer(serializers.ModelSerializer):
+    chosen = serializers.SerializerMethodField(method_name='get_chosen')
+
+    def get_chosen(self, answer):
+        course_id = self.context()
+        quiz_progress = QuizProgress.objects.filter()
+
+    class Meta:
+        model = QuizAnswerModel
+        fields = '__all__'
