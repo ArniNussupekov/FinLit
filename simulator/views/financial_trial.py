@@ -1,10 +1,11 @@
 from django.db.models import Q
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from simulator.models import FinancialTrialModel
 
-from simulator.serializers import FinancialTrialSerializer
+from simulator.serializers import FinancialTrialSerializer, FinancialTrialRetrieveSerializer, TrialAnswerSerializer
 
 
 class FinancialTrialViewSet(viewsets.ViewSet):
@@ -36,12 +37,20 @@ class FinancialTrialViewSet(viewsets.ViewSet):
 
         return Response({"success": True, "data": serializer.data})
 
+    @action(detail=False, methods=['post'])
+    def add_answers(self, request):
+        serializer = TrialAnswerSerializer(data=request.data)
+        serializer.is_valid()
+        serializer.save()
+
+        return Response({"success": True, "data": serializer.data})
+
     def retrieve(self, request, pk):
         try:
             simulator = FinancialTrialModel.objects.get(id=pk)
         except Exception as e:
             raise "Object not found"
-        serializer = FinancialTrialSerializer(simulator)
+        serializer = FinancialTrialRetrieveSerializer(simulator)
 
         return Response(serializer.data)
 
