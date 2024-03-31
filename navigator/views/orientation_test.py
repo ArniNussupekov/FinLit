@@ -2,7 +2,7 @@ from rest_framework import viewsets, pagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from navigator.models import QuizModel
+from navigator.models import NavigatorQuizModel
 from navigator.serializers import QuizSerializer, QuizAnswerSerializer
 
 
@@ -16,7 +16,7 @@ class QuizViewSet(viewsets.ViewSet):
     pagination_class = QuizPagination
 
     def list(self, request):
-        quizzes = QuizModel.objects.all()
+        quizzes = NavigatorQuizModel.objects.all()
 
         paginator = self.pagination_class()
         paginated_quizzes = paginator.paginate_queryset(quizzes, request)
@@ -42,7 +42,7 @@ class QuizViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk):
         try:
-            quiz = QuizModel.objects.get(id=pk)
+            quiz = NavigatorQuizModel.objects.get(id=pk)
         except Exception as e:
             raise "Not Found"
 
@@ -50,7 +50,7 @@ class QuizViewSet(viewsets.ViewSet):
 
     def update(self, request, pk):
         try:
-            quiz = QuizModel.objects.get(id=pk)
+            quiz = NavigatorQuizModel.objects.get(id=pk)
         except Exception as e:
             raise "Not Found"
 
@@ -62,7 +62,7 @@ class QuizViewSet(viewsets.ViewSet):
 
     def delete(self, request, pk):
         try:
-            quiz = QuizModel.objects.get(id=pk)
+            quiz = NavigatorQuizModel.objects.get(id=pk)
         except Exception as e:
             raise "Not Found"
 
@@ -71,5 +71,14 @@ class QuizViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['post'])
     def submit(self, request):
+        answers = request.data["answers"]
+        category = 'None'
 
-        return Response({"Message": request.data})
+        if answers[0] == 1:
+            category = 'Bank'
+        elif answers[0] == 2:
+            category = 'Money'
+        elif answers[0] == 3:
+            category = 'Investment'
+
+        return Response({"level": answers[0], "category": category})
