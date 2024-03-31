@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'administrator',
     'progress',
     'simulator',
+    'navigator',
 ]
 
 MIDDLEWARE = [

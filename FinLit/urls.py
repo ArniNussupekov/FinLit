@@ -8,4 +8,5 @@ urlpatterns = [
     path('administrator/', include('administrator.urls')),
     path('progress/', include('progress.urls')),
     path('simulator/', include('simulator.urls')),
+    path('navigator/', include('navigator.urls')),
 ]
