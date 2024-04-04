@@ -1,17 +1,25 @@
+{%  load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Привет, {{ name }}</title>
-    <style>
-        .gay {
-            color: yellow;
-            font-weight: 700;
-        }
-    </style>
+    <title>certificate</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
-    <h1 class="gay">Привет, {{ name }}</h1>
+    <div class="main">
+    <img class="left_image" src="{% static 'top_right.png' %}">
+    <div class="texts">
+        <h1 class="certificate_header">CERTIFICATE</h1>
+        <h2 class="to_class">This  is to certify that</h2>
+        <h2 class="user_name">{{ name }}</h2>
+        <hr>
+        <p class="main_text">Lorem ipsut moloko cola water</p>
+        <p class="date">04.04.2024</p>
+    </div>
+    <img class="medal" src="{% static 'medal.png' %}">
+    <img class="right_image" src="{% static 'bot_left.png' %}">
+    </div>
 </body>
 </html>

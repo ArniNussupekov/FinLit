@@ -1,0 +1,44 @@
+body{
+    background-color: #025B40;
+    padding: 30px;
+
+}
+
+.main{
+    background-color: white;
+    display: flex;
+    border-radius: 20px;
+    height: 610px;
+    justify-content: space-between;
+}
+
+.left_image {
+    height: 350px;
+    width: 350px;
+    border-top-left-radius: 20px;
+}
+
+.right_image {
+    height: 350px;
+    width: 350px;
+    border-bottom-right-radius: 20px;
+    margin-top: 260px;
+}
+
+.texts{
+    margin-left: 50px;
+}
+
+.certificate_header {
+    color: #025B40;
+}
+
+.user_name{
+    font-family: "Arial Black", serif;
+}
+
+.medal {
+    height: 190px;
+    width: 130px;
+    margin-left: -100px;
+}
