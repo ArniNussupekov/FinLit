@@ -9,4 +9,5 @@ urlpatterns = [
     path('progress/', include('progress.urls')),
     path('simulator/', include('simulator.urls')),
     path('navigator/', include('navigator.urls')),
+    path('certificate/', include('certificate.urls')),
 ]
