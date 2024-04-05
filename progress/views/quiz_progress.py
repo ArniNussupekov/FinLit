@@ -12,6 +12,7 @@ from progress.tools.percent_progress import CalculatePercentage
 
 
 from progress.serializers import QuizProgressSerializer, LeaderBoardSerializer, CourseProgressSerializer
+from user.serializers import UserSerializer
 
 
 class QuizProgressViewSet(viewsets.ViewSet):
@@ -42,10 +43,19 @@ class QuizProgressViewSet(viewsets.ViewSet):
             raise "QuizProgress is already exists!"
         return course
 
+    @classmethod
+    def upgrade_balance(cls, user_id):
+        user = User.objects.get(id=user_id)
+        new_balance = user.balance + 25
+        user_serializer = UserSerializer(instance=user, data={"balance": new_balance}, partial=True)
+        user_serializer.is_valid()
+        user_serializer.save()
+
     @action(detail=True, methods=['post'])
     def submit(self, request, pk):
         user_id = request.query_params.get("user_id")
         course = self.get_course(user_id=user_id, course_id=pk)
+        self.upgrade_balance(user_id)
 
         grade = CalculatePercentage.calculate_grade(request.data["answers"])
 

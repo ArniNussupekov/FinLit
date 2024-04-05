@@ -10,6 +10,7 @@ class User(models.Model):
     password = models.CharField(max_length=255)
     age = models.IntegerField(blank=True, null=True)
     bookmarked_courses = models.ManyToManyField(CourseModel, blank=True)
+    balance = models.IntegerField(default=0, blank=True)
 
 
 class CourseProgress(models.Model):

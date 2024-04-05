@@ -10,6 +10,8 @@ class CourseModel(models.Model):
     module = models.IntegerField(default=1)
     category = models.CharField(max_length=255, default="Money")
     course_num = models.IntegerField(default=0)
+    is_free = models.BooleanField(default=True, blank=True)
+    cost = models.IntegerField(default=0, blank=True)
   
 
 class LessonModel(models.Model):

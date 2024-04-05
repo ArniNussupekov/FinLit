@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from progress.models import CourseProgress, LessonProgress
 from course.models import CourseModel, LessonModel
 from user.models import User
+from user.serializers import UserSerializer
 
 from progress.serializers import CourseProgressSerializer, LessonProgressSerializer, ListCourseProgressSerializer
 
@@ -18,8 +19,6 @@ class CourseProgressViewSet(viewsets.ViewSet):
     @classmethod
     def check_if_joined(cls, user_id, course_id):
         checker = CourseProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id)).first()
-
-        print(checker)
 
         if checker is not None:
             print("YES")
@@ -35,6 +34,13 @@ class CourseProgressViewSet(viewsets.ViewSet):
             return True
         else:
             return False
+
+    @classmethod
+    def upgrade_balance(cls, user, course):
+        new_balance = user.balance - course.cost
+        user_serializer = UserSerializer(instance=user, data={"balance": new_balance}, partial=True)
+        user_serializer.is_valid()
+        user_serializer.save()
 
     def list(self, request):
         user_id = request.query_params.get("user_id")
@@ -57,6 +63,14 @@ class CourseProgressViewSet(viewsets.ViewSet):
         if checker is True:
             raise "User is already joined!"
 
+        # Updating balance
+        if course.is_free is False and checker is False:
+            if user.balance < course.cost:
+                return Response({"message": "Not enough money", "status": 400})
+
+            self.upgrade_balance(user=user, course=course)
+
+        # Saving progress
         data = {"course_id": course.id, "user_id": user_id, "status": CourseProgress.Status.LEARNING,
                 "course_level": course.module}
 
