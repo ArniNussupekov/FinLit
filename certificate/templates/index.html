@@ -5,7 +5,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>certificate</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        body{
+    background-color: #025B40;
+    padding: 30px;
+
+}
+
+.main{
+    background-color: white;
+    display: flex;
+    border-radius: 20px;
+    height: 620px;
+    justify-content: space-between;
+}
+
+.left_image {
+    height: 350px;
+    width: 350px;
+    border-top-left-radius: 20px;
+}
+
+.right_image {
+    height: 350px;
+    width: 350px;
+    border-bottom-right-radius: 20px;
+    margin-top: 270px;
+}
+
+.texts{
+    margin-left: 50px;
+}
+
+.certificate_header {
+    color: #025B40;
+}
+
+.user_name{
+    font-family: "Arial Black", serif;
+    font-weight: bold;
+}
+
+.main_text{
+    font-weight: bold;
+}
+
+.medal {
+    height: 190px;
+    width: 130px;
+    margin-left: -100px;
+}
+    </style>
 </head>
 <body>
     <div class="main">
@@ -15,8 +65,8 @@
         <h2 class="to_class">This  is to certify that</h2>
         <h2 class="user_name">{{ name }}</h2>
         <hr>
-        <p class="main_text">Lorem ipsut moloko cola water</p>
-        <p class="date">04.04.2024</p>
+        <p class="main_text">Was completed {{ course }} course successfully!!!</p>
+        <p class="date">06.04.2024</p>
     </div>
     <img class="medal" src="{% static 'medal.png' %}">
     <img class="right_image" src="{% static 'bot_left.png' %}">
