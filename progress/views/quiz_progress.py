@@ -54,7 +54,12 @@ class QuizProgressViewSet(viewsets.ViewSet):
     @action(detail=True, methods=['post'])
     def submit(self, request, pk):
         user_id = request.query_params.get("user_id")
-        course = self.get_course(user_id=user_id, course_id=pk)
+
+        try:
+            course = self.get_course(user_id=user_id, course_id=pk)
+        except:
+            return Response({"message: ": "Already submitted"})
+
         self.upgrade_balance(user_id)
 
         grade = CalculatePercentage.calculate_grade(request.data["answers"])
