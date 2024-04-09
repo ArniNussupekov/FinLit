@@ -48,6 +48,26 @@ class MyCoursesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class BookmarkSerializer(serializers.ModelSerializer):
+    progress = serializers.SerializerMethodField(method_name="get_progress")
+
+    def get_progress(self, course):
+        try:
+            user_id = self.context['user_id']
+            course_id = course.id
+            progress = CourseProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id)).first()
+        except Exception as e:
+            raise e
+        if progress:
+            return progress.percent
+        else:
+            return 0
+
+    class Meta:
+        model = CourseModel
+        fields = '__all__'
+
+
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseModel

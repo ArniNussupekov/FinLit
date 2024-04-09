@@ -7,7 +7,7 @@ from course.models import CourseModel
 from user.models import User
 from progress.models import CourseProgress
 
-from course.serializers import CourseSerializer, CourseRetrieveSerializer, MyCoursesSerializer
+from course.serializers import CourseSerializer, CourseRetrieveSerializer, MyCoursesSerializer, BookmarkSerializer
 
 
 class CourseViewSet(viewsets.ViewSet):
@@ -85,7 +85,7 @@ class CourseViewSet(viewsets.ViewSet):
     def get_bookmark(self, request):
         user_id = request.query_params.get("user_id")
         user = User.objects.get(id=user_id)
-        serializer = CourseSerializer(user.bookmarked_courses, many=True)
+        serializer = BookmarkSerializer(user.bookmarked_courses, context={"user_id": user_id}, many=True)
 
         return Response(serializer.data)
 
