@@ -1,13 +1,19 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
 from course.models import CourseModel
 
 
-class User(models.Model):
+class User(AbstractUser):
     name = models.CharField(max_length=255)
-    surname = models.CharField(max_length=255, blank=True, null=True)
-    email = models.EmailField(max_length=254)
-    phone = models.CharField(max_length=10, blank=True, null=True)
+    email = models.EmailField(max_length=254, unique=True)
     password = models.CharField(max_length=255)
+    username = None
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    phone = models.CharField(max_length=10, blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
     bookmarked_courses = models.ManyToManyField(CourseModel, blank=True)
     balance = models.IntegerField(default=0, blank=True)

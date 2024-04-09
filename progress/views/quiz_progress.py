@@ -51,6 +51,7 @@ class QuizProgressViewSet(viewsets.ViewSet):
         user_serializer.is_valid()
         user_serializer.save()
 
+    #Todo add check of joined or not
     @action(detail=True, methods=['post'])
     def submit(self, request, pk):
         user_id = request.query_params.get("user_id")
