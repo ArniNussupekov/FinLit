@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure-(ben93h+m#&#ji4-(_d7!zar5hkd1jhzh%zi&1xqt_(4v+6lhu
 # Make this False in Prod
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '86.107.44.136']
 
 
 INSTALLED_APPS = [
@@ -66,7 +66,7 @@ DATABASES = {
     'default': {
         'ENGINE': os.environ.get('DB_DRIVER', 'django.db.backends.postgresql'),
         'USER': os.environ.get('PG_USER', 'postgres'),
-        'PASSWORD': os.environ.get('PG_PASSWORD', 'postgres'),
+        'PASSWORD': os.environ.get('PG_PASSWORD', 'root'),
         'NAME': os.environ.get('PG_DB', 'postgres'),
         'PORT': os.environ.get('PG_PORT', '5432'),
         'HOST': os.environ.get('PG_HOST', 'localhost'),
