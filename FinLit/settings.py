@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure-(ben93h+m#&#ji4-(_d7!zar5hkd1jhzh%zi&1xqt_(4v+6lhu
 # Make this False in Prod
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '86.107.44.136']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '86.107.44.136']
 
 
 INSTALLED_APPS = [
