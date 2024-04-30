@@ -112,15 +112,21 @@ STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'user.User'
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
-    'http://localhost:3000'
+    'http://127.0.0.1:3000',
+    'http://86.107.44.136',
 ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_COOKIE_SAMESITE = 'None'  # Required for CSRF cookie to be sent from the frontend
+SESSION_COOKIE_SAMESITE = 'None'  # Same for the session cookie
+CSRF_COOKIE_SECURE = True  # Ensure these are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
