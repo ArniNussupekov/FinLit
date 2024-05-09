@@ -26,7 +26,7 @@ class ListCourseProgressSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CourseProgress
-        fields = ['course_level', 'course_name', 'percent', 'is_completed']
+        fields = '__all__'
 
 
 class CourseProgressSerializer(serializers.ModelSerializer):
