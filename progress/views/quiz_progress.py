@@ -14,7 +14,7 @@ from progress.tools.percent_progress import CalculatePercentage
 from progress.serializers import QuizProgressSerializer, LeaderBoardSerializer, CourseProgressSerializer
 from user.serializers import UserSerializer
 
-clear
+
 class QuizProgressViewSet(viewsets.ViewSet):
     @classmethod
     def complete_course(cls, user_id, course_id):
