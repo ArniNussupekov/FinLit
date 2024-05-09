@@ -34,7 +34,7 @@ class CalculatePercentage:
 
     @classmethod
     def calculate_quiz_percentage(cls, course_progress):
-        if course_progress.is_completed:
+        if course_progress.quiz_done:
             return 30
         else:
             return 0

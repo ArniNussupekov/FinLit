@@ -14,7 +14,7 @@ from progress.tools.percent_progress import CalculatePercentage
 from progress.serializers import QuizProgressSerializer, LeaderBoardSerializer, CourseProgressSerializer
 from user.serializers import UserSerializer
 
-
+clear
 class QuizProgressViewSet(viewsets.ViewSet):
     @classmethod
     def complete_course(cls, user_id, course_id):
@@ -23,7 +23,14 @@ class QuizProgressViewSet(viewsets.ViewSet):
         except Exception as e:
             raise "No such course in Progress"
 
-        data = {"is_completed": True, "status": CourseProgress.Status.COMPLETED}
+        if progress.percent == 70:
+            is_completed = True
+            status = CourseProgress.Status.COMPLETED
+        else:
+            is_completed = False
+            status = CourseProgress.Status.LEARNING
+
+        data = {"is_completed": is_completed, "status": status, "quiz_done": True}
         serializer = CourseProgressSerializer(instance=progress, data=data, partial=True)
         serializer.is_valid()
         serializer.save()
