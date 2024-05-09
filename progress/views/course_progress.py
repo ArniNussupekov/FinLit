@@ -113,6 +113,9 @@ class CourseProgressViewSet(viewsets.ViewSet):
         serializer.save()
 
         res = CalculatePercentage.calculate_percentage(course_progress.id)
+        if course_progress.percent == 100:
+            course_progress.is_completed = True
+            course_progress.status = CourseProgress.Status.COMPLETED
 
         return Response({"message": res})
 
