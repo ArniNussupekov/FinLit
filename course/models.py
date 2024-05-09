@@ -12,13 +12,14 @@ class CourseModel(models.Model):
     course_num = models.IntegerField(default=0)
     is_free = models.BooleanField(default=True, blank=True)
     cost = models.IntegerField(default=0, blank=True)
+    img = models.ImageField(upload_to='images/', null=True, blank=True)
   
 
 class LessonModel(models.Model):
     lesson_num = models.IntegerField(null=True, blank=True)
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
-    content = models.TextField()
+    url = models.CharField(null=True, max_length=500, default=None)
     course = models.ForeignKey(CourseModel, on_delete=models.CASCADE, null=True)
 
 
