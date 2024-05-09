@@ -5,4 +5,3 @@ from certificate.views import CertificateViewSet
 
 router = DefaultRouter()
 router.register(r'', CertificateViewSet, basename='certificate')
-urlpatterns = router.urls

@@ -93,9 +93,9 @@ class CourseProgressViewSet(viewsets.ViewSet):
         lesson_checker = self.check_if_learned(user.id, lesson.id)
 
         if not checker:
-            raise "You are not even joined the course!"
+            return Response({"Did not joined course": True})
         elif lesson_checker:
-            raise "You are completed course"
+            return Response({"Already Submit": True})
 
         try:
             course_progress = CourseProgress.objects.filter(Q(course_id=lesson.course_id) & Q(user_id=user_id)).first()
