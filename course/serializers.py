@@ -1,7 +1,7 @@
 from django.db.models import Q
 
 from rest_framework import serializers
-from .models import CourseModel, LessonModel, QuizModel, QuizAnswerModel
+from .models import CourseModel, LessonModel, QuizModel, QuizAnswerModel, Accordion
 from progress.models import CourseProgress, LessonProgress, QuizProgress
 from user.models import User
 
@@ -122,6 +122,26 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = LessonModel
         fields = '__all__'
+
+
+class AccordionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Accordion
+        fields = '__all__'
+
+
+class RetrieveLessonSerializer(serializers.ModelSerializer):
+    accordions = serializers.SerializerMethodField(method_name='get_accordion')
+
+    def get_accordion(self, lesson):
+        accordions = Accordion.objects.filter(lesson=lesson.id)
+        accordions_serializer = AccordionSerializer(accordions, many=True, read_only=True)
+
+        return accordions_serializer.data
+
+    class Meta:
+        model = LessonModel
+        fields = ['lesson_num', 'name', 'description', 'url', 'course', 'accordions']
 
 
 class QuizAnswerSerializer(serializers.ModelSerializer):

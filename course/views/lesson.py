@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from course.models import LessonModel
-from course.serializers import LessonSerializer, MyLessonSerializer
+from course.serializers import LessonSerializer, MyLessonSerializer, RetrieveLessonSerializer
 
 
 class LessonViewSet(viewsets.ViewSet):
@@ -25,7 +25,7 @@ class LessonViewSet(viewsets.ViewSet):
         except Exception as e:
             raise "Not Found"
 
-        return Response(LessonSerializer(lesson).data)
+        return Response(RetrieveLessonSerializer(lesson).data)
 
     def update(self, request, pk):
         try:

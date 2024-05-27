@@ -23,6 +23,12 @@ class LessonModel(models.Model):
     course = models.ForeignKey(CourseModel, on_delete=models.CASCADE, null=True)
 
 
+class Accordion(models.Model):
+    lesson = models.ForeignKey(LessonModel, on_delete=models.CASCADE)
+    question = models.CharField(max_length=255)
+    answer = models.TextField()
+
+
 # some shit logic
 class QuizModel(models.Model):
     course_id = models.IntegerField(default=0, null=True)
