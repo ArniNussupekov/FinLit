@@ -171,14 +171,26 @@ class QuizSerializer(serializers.ModelSerializer):
         fields = ['id', 'course_id', 'question', 'answers']
 
 
-# ToDo make logic for this
-class QuizChosenAnswerSerializer(serializers.ModelSerializer):
-    chosen = serializers.SerializerMethodField(method_name='get_chosen')
+class QuizHistorySerializer(serializers.ModelSerializer):
+    answers = serializers.SerializerMethodField(method_name="get_answers")
 
-    def get_chosen(self, answer):
-        course_id = self.context()
-        quiz_progress = QuizProgress.objects.filter()
+    def get_answers(self, quiz):
+        user_id = self.context['user_id']
+        course_id = quiz.course_id
+        answers = QuizAnswerModel.objects.filter(quiz_id=quiz.id)
+        serializer = QuizAnswerSerializer(answers, many=True, read_only=True)
+
+        quiz_progress = QuizProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id)).first()
+        chosen = list(quiz_progress.user_choices)
+
+        for answer in serializer.data:
+            if answer['id'] in chosen:
+                answer['chosen'] = True
+            else:
+                answer['chosen'] = False
+
+        return serializer.data
 
     class Meta:
-        model = QuizAnswerModel
-        fields = '__all__'
+        model = QuizModel
+        fields = ['id', 'course_id', 'question', 'answers']

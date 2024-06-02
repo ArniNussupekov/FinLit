@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from course.models import QuizModel
-from course.serializers import QuizSerializer, QuizAnswerSerializer
+from course.serializers import QuizSerializer, QuizAnswerSerializer, QuizHistorySerializer
 
 
 class QuizPagination(pagination.PageNumberPagination):
@@ -25,6 +25,22 @@ class QuizViewSet(viewsets.ViewSet):
         serializer = QuizSerializer(paginated_quizzes, many=True)
 
         return paginator.get_paginated_response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def quiz_history(self, request):
+        course_id = request.query_params.get("course_id")
+        user_id = request.query_params.get("user_id")
+        quizzes = QuizModel.objects.filter(course_id=course_id)
+
+        paginator = self.pagination_class()
+        paginated_quizzes = paginator.paginate_queryset(quizzes, request)
+
+        serializer = QuizHistorySerializer(paginated_quizzes, many=True, context={'user_id': user_id})
+
+        return paginator.get_paginated_response(serializer.data)
+
+
+
 
     def create(self, request):
         serializer = QuizSerializer(data=request.data)

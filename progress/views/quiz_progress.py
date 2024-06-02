@@ -96,7 +96,3 @@ class QuizProgressViewSet(viewsets.ViewSet):
         courses = CourseModel.objects.filter(id__in=course_ids)
 
         return Response(LeaderBoardSerializer(courses, context={'user_id': user_id}, many=True).data)
-
-    @action(detail=True, methods=['get'])
-    def quiz_history(self, request):
-        pass
