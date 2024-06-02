@@ -103,6 +103,13 @@ class CourseRetrieveSerializer(serializers.ModelSerializer):
 
 class MyLessonSerializer(serializers.ModelSerializer):
     is_completed = serializers.SerializerMethodField(method_name="get_is_completed")
+    accordions = serializers.SerializerMethodField(method_name='get_accordion')
+
+    def get_accordion(self, lesson):
+        accordions = Accordion.objects.filter(lesson=lesson.id)
+        accordions_serializer = AccordionSerializer(accordions, many=True, read_only=True)
+
+        return accordions_serializer.data
 
     def get_is_completed(self, lesson):
         user_id = self.context['user_id']
