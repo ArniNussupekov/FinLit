@@ -77,6 +77,7 @@ class CourseSerializer(serializers.ModelSerializer):
 class CourseRetrieveSerializer(serializers.ModelSerializer):
     is_bookmarked = serializers.SerializerMethodField(method_name="get_is_starred")
     is_completed = serializers.SerializerMethodField(method_name="get_is_completed")
+    quiz_completed = serializers.SerializerMethodField(method_name="get_quiz_completed")
 
     def get_is_starred(self, course):
         user_id = self.context['user_id']
@@ -93,6 +94,15 @@ class CourseRetrieveSerializer(serializers.ModelSerializer):
         progress = CourseProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id)).first()
         if progress:
             return progress.is_completed
+        else:
+            return False
+
+    def get_quiz_completed(self, course):
+        user_id = self.context['user_id']
+        course_id = course.id
+        progress = CourseProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id)).first()
+        if progress:
+            return progress.quiz_done
         else:
             return False
 

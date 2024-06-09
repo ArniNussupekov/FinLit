@@ -39,9 +39,6 @@ class QuizViewSet(viewsets.ViewSet):
 
         return paginator.get_paginated_response(serializer.data)
 
-
-
-
     def create(self, request):
         serializer = QuizSerializer(data=request.data)
         serializer.is_valid()
