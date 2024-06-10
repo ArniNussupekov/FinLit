@@ -1,4 +1,5 @@
 from django.db.models import Q
+from rest_framework.response import Response
 
 from progress.models import LessonProgress, CourseProgress
 from course.models import LessonModel, QuizAnswerModel
@@ -27,6 +28,10 @@ class CalculatePercentage:
         lesson_num = LessonModel.objects.filter(course_id=course_id).count()
         max_fill = 70
         complete = lessons.count()
+
+        if complete == 0:
+            return Response({"NoLessonAdded": True})
+
         fill = (100 * complete) / lesson_num
         percentage = (max_fill * fill) / 100
 

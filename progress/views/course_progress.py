@@ -113,7 +113,7 @@ class CourseProgressViewSet(viewsets.ViewSet):
         serializer.save()
 
         res = CalculatePercentage.calculate_percentage(course_progress.id)
-        return Response({"message": res})
+        return Response({"LessonComplete": True, "result": res})
 
     @action(detail=False, methods=['get'])
     def get_achievements(self, request):
