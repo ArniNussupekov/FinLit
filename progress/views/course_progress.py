@@ -61,12 +61,12 @@ class CourseProgressViewSet(viewsets.ViewSet):
 
         checker = self.check_if_joined(user.id, course.id)
         if checker is True:
-            raise "User is already joined!"
+            return Response({"Joined": False})
 
         # Updating balance
         if course.is_free is False and checker is False:
             if user.balance < course.cost:
-                return Response({"message": "Not enough money", "status": 400})
+                return Response({"EnoughMoney": False, "status": 400})
 
             self.upgrade_balance(user=user, course=course)
 
@@ -78,7 +78,7 @@ class CourseProgressViewSet(viewsets.ViewSet):
         serializer.is_valid()
         serializer.save()
 
-        return Response({"Message": True})
+        return Response({"Joined": True})
 
     @action(detail=True, methods=['post'])
     def complete_lesson(self, request, pk):
