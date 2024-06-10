@@ -17,20 +17,16 @@ from user.serializers import UserSerializer
 
 class QuizProgressViewSet(viewsets.ViewSet):
     @classmethod
-    def complete_course(cls, user_id, course_id):
+    def complete_quiz(cls, user_id, course_id):
         try:
             progress = CourseProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id)).first()
         except Exception as e:
             raise "No such course in Progress"
 
-        if progress.percent == 70:
-            is_completed = True
-            status = CourseProgress.Status.COMPLETED
-        else:
-            is_completed = False
-            status = CourseProgress.Status.LEARNING
+        if progress.quiz_done:
+            return Response({"Message:": "You have already submit"})
 
-        data = {"is_completed": is_completed, "status": status, "quiz_done": True}
+        data = {"quiz_done": True}
         serializer = CourseProgressSerializer(instance=progress, data=data, partial=True)
         serializer.is_valid()
         serializer.save()
@@ -78,8 +74,8 @@ class QuizProgressViewSet(viewsets.ViewSet):
         serializer.is_valid()
         serializer.save()
 
-        progress = self.complete_course(user_id, course.id)
-        res = CalculatePercentage.calculate_percentage(progress)
+        progress = self.complete_quiz(user_id, course.id)
+        CalculatePercentage.calculate_percentage(progress)
 
         return Response(serializer.data)
 

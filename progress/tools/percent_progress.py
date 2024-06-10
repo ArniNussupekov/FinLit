@@ -40,12 +40,26 @@ class CalculatePercentage:
             return 0
 
     @classmethod
+    def complete_course(cls, lesson_percent, quiz_percent):
+        total = lesson_percent+quiz_percent
+        if total == 100:
+            return True
+        else:
+            return False
+
+    @classmethod
     def calculate_percentage(cls, course_progress_id):
         course_progress = CourseProgress.objects.get(id=course_progress_id)
         lesson_percent = cls.calculate_lesson_percentage(course_progress.user_id, course_progress.course_id)
         quiz_percent = cls.calculate_quiz_percentage(course_progress)
+        completed = cls.complete_course(lesson_percent, quiz_percent)
 
-        data = {"percent": lesson_percent+quiz_percent}
+        if completed:
+            status = CourseProgress.Status.COMPLETED
+        else:
+            status = CourseProgress.Status.LEARNING
+
+        data = {"percent": lesson_percent+quiz_percent, "is_completed": completed, "status": status}
         serializer = CourseProgressSerializer(instance=course_progress, data=data, partial=True)
         serializer.is_valid()
         serializer.save()

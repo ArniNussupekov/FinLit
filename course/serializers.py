@@ -9,6 +9,7 @@ from user.models import User
 class MyCoursesSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField(method_name="get_status")
     progress = serializers.SerializerMethodField(method_name="get_progress")
+    is_completed = serializers.SerializerMethodField(method_name="get_completed")
     lesson_num = serializers.SerializerMethodField(method_name="get_lesson_num")
 
     def get_lesson_num(self, course):
@@ -40,6 +41,19 @@ class MyCoursesSerializer(serializers.ModelSerializer):
             raise e
         if progress:
             return progress.percent
+        else:
+            return None
+
+    def get_completed(self, course):
+        try:
+            user_id = self.context['user_id']
+            course_id = course.id
+            progress = CourseProgress.objects.filter(Q(course_id=course_id) & Q(user_id=user_id)).first()
+        except Exception as e:
+            raise e
+        if progress:
+            data = {"is_completed": progress.is_completed, "status": progress.status}
+            return data
         else:
             return None
 
