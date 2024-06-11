@@ -62,3 +62,14 @@ class ProfileViewSet(viewsets.ViewSet):
         record.send_verification_email(content)
 
         return Response({"Success": True})
+
+    @action(detail=True, methods=['post'])
+    def confirm_email(self, request, pk):
+        user = User.objects.get(id=pk)
+
+        if user.unicode == request.data["code"]:
+            user.is_verified = True
+            user.save()
+            return Response({"Success": True})
+        else:
+            return Response({"Success": False})

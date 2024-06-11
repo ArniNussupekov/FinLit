@@ -11,6 +11,7 @@ class User(AbstractUser):
     password = models.CharField(max_length=255)
     username = None
     is_verified = models.BooleanField(default=False)
+    unicode = models.IntegerField(null=True, default=None, unique=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

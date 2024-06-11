@@ -14,7 +14,6 @@ class CalculatePercentage:
         answer_num = len(user_choices)
 
         quiz_answers = QuizAnswerModel.objects.filter(id__in=user_choices)
-        print(quiz_answers)
         correct_answer_num = 0
 
         for answer in quiz_answers:
