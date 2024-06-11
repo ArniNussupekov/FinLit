@@ -9,6 +9,10 @@ from progress.serializers import CourseProgressSerializer
 
 class CalculatePercentage:
     @classmethod
+    def get_quiz_grade(cls, data):
+        pass
+
+    @classmethod
     def calculate_grade(cls, data):
         quiz_answers = QuizAnswerModel.objects.filter(id__in=data)
         answer_count = quiz_answers.count()

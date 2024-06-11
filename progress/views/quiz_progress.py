@@ -79,6 +79,17 @@ class QuizProgressViewSet(viewsets.ViewSet):
 
         return Response(serializer.data)
 
+    @action(detail=True, methods=['get'])
+    def get_quiz_result(self, request, pk):
+        user_id = request.query_params.get("user_id")
+        try:
+            user = User.objects.get(id=user_id)
+        except Exception as e:
+            raise e
+
+        progress = QuizProgress.objects.filter(Q(user_id=user_id) & Q(course_id=pk)).first()
+        data = {""}
+
     @action(detail=False, methods=['get'])
     def leaderboard(self, request):
         user_id = request.query_params.get("user_id")

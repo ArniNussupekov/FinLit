@@ -104,6 +104,13 @@ USE_I18N = True
 
 USE_TZ = True
 
+EMAIL_BACKEND = 'user.email_backends.CustomEmailBackend'
+EMAIL_HOST = 'smtp.yandex.kz'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'finlit.academy@yandex.kz'
+EMAIL_HOST_PASSWORD = 'ojxtbexmlxvzmgjb'
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

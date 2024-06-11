@@ -1,7 +1,11 @@
+import uuid
+from datetime import timedelta
+from django.utils.timezone import now
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from user.models import User
+from user.models import User, EmailVerification
 from user.serializers import UserSerializer
 
 import jwt, datetime
@@ -12,6 +16,18 @@ class RegisterView(APIView):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+
+        user = User.objects.get(id=serializer.data["id"])
+
+        expiration = now() + timedelta(minutes=50)
+        record = EmailVerification.objects.create(user=user, code=uuid.uuid4(), expiration=expiration)
+
+        message_content = {
+            "title": "Wanna Buy Some Niggers?",
+            "message": "Here is some niggers on sale"
+        }
+
+        record.send_verification_email(message_content)
 
         return Response(serializer.data)
 

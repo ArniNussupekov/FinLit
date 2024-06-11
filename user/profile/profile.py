@@ -1,8 +1,12 @@
+import uuid
+from datetime import timedelta
+from django.utils.timezone import now
+
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from user.models import User
+from user.models import User, EmailVerification
 from user.serializers import UserSerializer, UserMiniSerializer
 
 
@@ -42,3 +46,19 @@ class ProfileViewSet(viewsets.ViewSet):
             raise "Profile does not exist, uebok"
 
         return Response(UserMiniSerializer(user).data)
+
+    @action(detail=False, methods=['post'])
+    def send_email(self, request):
+        user = User.objects.get(id=11)
+
+        expiration = now() + timedelta(minutes=50)
+        record = EmailVerification.objects.create(user=user, code=uuid.uuid4(), expiration=expiration)
+
+        content = {
+            "title": "Wanna Buy Some Niggers?",
+            "message": "Here is some niggers on sale"
+        }
+
+        record.send_verification_email(content)
+
+        return Response({"Success": True})

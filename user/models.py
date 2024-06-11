@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.mail import send_mail
 
 from course.models import CourseModel
 
@@ -9,6 +10,7 @@ class User(AbstractUser):
     email = models.EmailField(max_length=254, unique=True)
     password = models.CharField(max_length=255)
     username = None
+    is_verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -26,3 +28,25 @@ class CourseProgress(models.Model):
 
     class Meta:
         unique_together = ('user', 'course',)
+
+
+class EmailVerification(models.Model):
+    code = models.UUIDField(unique=True)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    expiration = models.DateTimeField()
+
+    def __str__(self):
+        return f'Email verification object for {self.user.email}'
+
+    def send_verification_email(self, request):
+        title = request["title"]
+        message = request["message"]
+
+        send_mail(
+            title,
+            message,
+            'finlit.academy@yandex.ru',
+            [self.user.email],
+            fail_silently=False,
+        )
