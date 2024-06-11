@@ -13,15 +13,17 @@ class CalculatePercentage:
         #Todo
         user_choices = quiz_progress.user_choices
 
-        quiz_answers = QuizModel.objects.filter(course_id=quiz_progress.course_id)
-        answer_count = quiz_answers.count()
-        correct_answer_num = 0
+        # quiz_answers = QuizModel.objects.filter(course_id=quiz_progress.course_id)
+        # answer_count = quiz_answers.count()
+        # correct_answer_num = 0
+        #
+        # for answer in quiz_answers:
+        #     if answer.is_correct is True:
+        #         correct_answer_num += 1
 
-        for answer in quiz_answers:
-            if answer.is_correct is True:
-                correct_answer_num += 1
+        
 
-        return {"CorrectAnswers": correct_answer_num, "AnswersNum": answer_count}
+        return {"CorrectAnswers": 5, "AnswersNum": 10}
 
 
     @classmethod
