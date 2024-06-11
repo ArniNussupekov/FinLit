@@ -45,7 +45,7 @@ class QuizProgressViewSet(viewsets.ViewSet):
         if course_progress is None:
             raise 'Did not joined'
 
-        checker = QuizProgress.objects.filter(Q(course_id=course.id) & Q(user_id=user.id))
+        checker = QuizProgress.objects.filter(Q(course_id=course.id) & Q(user_id=user.id)).first()
         if checker:
             raise 'Quiz Submited'
         return course
@@ -58,12 +58,14 @@ class QuizProgressViewSet(viewsets.ViewSet):
         user_serializer.is_valid()
         user_serializer.save()
 
-    #Todo add check of joined or not
     @action(detail=True, methods=['post'])
     def submit(self, request, pk):
         user_id = request.query_params.get("user_id")
 
-        course = self.get_course(user_id=user_id, course_id=pk)
+        try:
+            course = self.get_course(user_id=user_id, course_id=pk)
+        except Exception:
+            return Response({"AlreadySubmitedOrNotJoined": True})
 
         self.upgrade_balance(user_id)
 
