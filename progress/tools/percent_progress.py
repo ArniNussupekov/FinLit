@@ -2,7 +2,7 @@ from django.db.models import Q
 from rest_framework.response import Response
 
 from progress.models import LessonProgress, CourseProgress
-from course.models import LessonModel, QuizAnswerModel
+from course.models import LessonModel, QuizAnswerModel, QuizModel
 
 from progress.serializers import CourseProgressSerializer
 
@@ -10,9 +10,10 @@ from progress.serializers import CourseProgressSerializer
 class CalculatePercentage:
     @classmethod
     def get_quiz_result(cls, quiz_progress):
+        #Todo
         user_choices = quiz_progress.user_choices
 
-        quiz_answers = QuizAnswerModel.objects.filter(quiz=quiz_progress.quiz)
+        quiz_answers = QuizModel.objects.filter(course_id=quiz_progress.course_id)
         answer_count = quiz_answers.count()
         correct_answer_num = 0
 
