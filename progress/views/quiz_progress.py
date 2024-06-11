@@ -42,7 +42,7 @@ class QuizProgressViewSet(viewsets.ViewSet):
             raise e
 
         checker = QuizProgress.objects.filter(Q(course_id=course.id) & Q(user_id=user.id)).first()
-        if checker:
+        if checker is None:
             raise 'Quiz Submited'
         return course
 
