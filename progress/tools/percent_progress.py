@@ -45,7 +45,7 @@ class CalculatePercentage:
         complete = lessons.count()
 
         if complete == 0:
-            return Response({"NoLessonAdded": True})
+            return 0
 
         fill = (100 * complete) / lesson_num
         percentage = (max_fill * fill) / 100
@@ -61,7 +61,7 @@ class CalculatePercentage:
 
     @classmethod
     def complete_course(cls, lesson_percent, quiz_percent):
-        total = lesson_percent+quiz_percent
+        total = lesson_percent + quiz_percent
         if total == 100:
             return True
         else:

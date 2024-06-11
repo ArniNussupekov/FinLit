@@ -41,10 +41,6 @@ class QuizProgressViewSet(viewsets.ViewSet):
         except Exception as e:
             raise e
 
-        course_progress = CourseProgress.objects.filter(Q(course_id=course.id) & Q(user_id=user.id)).first()
-        if course_progress is None:
-            raise 'Did not joined'
-
         checker = QuizProgress.objects.filter(Q(course_id=course.id) & Q(user_id=user.id)).first()
         if checker:
             raise 'Quiz Submited'
@@ -65,7 +61,12 @@ class QuizProgressViewSet(viewsets.ViewSet):
         try:
             course = self.get_course(user_id=user_id, course_id=pk)
         except Exception:
-            return Response({"AlreadySubmitedOrNotJoined": True})
+            return Response({"AlreadySubmited": True})
+
+        try:
+            progress = CourseProgress.objects.filter(Q(course_id=pk) & Q(user_id=user_id)).first()
+        except Exception as e:
+            return Response({"NotJoinedCourse": True})
 
         self.upgrade_balance(user_id)
 
