@@ -41,7 +41,7 @@ class QuizProgressViewSet(viewsets.ViewSet):
         except Exception as e:
             raise e
 
-        course_progress = CourseProgress.objects.filter(Q(user_id=user.id) & Q(course_id=course_id.id)).first()
+        course_progress = CourseProgress.objects.filter(Q(course_id=course.id) & Q(user_id=user.id)).first()
         if course_progress is None:
             return Response({"DidNotJoinedCourse": True})
 
