@@ -50,9 +50,10 @@ class LeaderBoardSerializer(serializers.ModelSerializer):
         user_id = self.context['user_id']
         course_id = course.id
         progress = QuizProgress.objects.filter(Q(user_id=user_id) & Q(course_id=course_id)).first()
-        the_progress = progress.get(course_id=course_id)
+        if progress is None:
+            return None
 
-        return the_progress.grade
+        return progress.grade
 
     class Meta:
         model = CourseModel
