@@ -61,7 +61,7 @@ class CourseProgressViewSet(viewsets.ViewSet):
 
         checker = self.check_if_joined(user.id, course.id)
         if checker is True:
-            return Response({"Joined": False})
+            return Response({"JoinedCourse": True})
 
         # Updating balance
         if course.is_free is False and checker is False:

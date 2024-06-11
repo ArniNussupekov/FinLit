@@ -41,9 +41,13 @@ class QuizProgressViewSet(viewsets.ViewSet):
         except Exception as e:
             raise e
 
+        course_progress = CourseProgress.objects.filter(Q(user_id=user.id) & Q(course_id=course_id.id)).first()
+        if course_progress is None:
+            return Response({"DidNotJoinedCourse": True})
+
         checker = QuizProgress.objects.filter(Q(course_id=course.id) & Q(user_id=user.id))
         if checker:
-            raise "QuizProgress is already exists!"
+            return Response({"QuizSubmitted": True})
         return course
 
     @classmethod
@@ -59,10 +63,7 @@ class QuizProgressViewSet(viewsets.ViewSet):
     def submit(self, request, pk):
         user_id = request.query_params.get("user_id")
 
-        try:
-            course = self.get_course(user_id=user_id, course_id=pk)
-        except:
-            return Response({"message: ": "Already submitted"})
+        course = self.get_course(user_id=user_id, course_id=pk)
 
         self.upgrade_balance(user_id)
 
@@ -79,17 +80,6 @@ class QuizProgressViewSet(viewsets.ViewSet):
 
         return Response(serializer.data)
 
-    @action(detail=True, methods=['get'])
-    def get_quiz_result(self, request, pk):
-        user_id = request.query_params.get("user_id")
-        try:
-            user = User.objects.get(id=user_id)
-        except Exception as e:
-            raise e
-
-        progress = QuizProgress.objects.filter(Q(user_id=user_id) & Q(course_id=pk)).first()
-        data = {""}
-
     @action(detail=False, methods=['get'])
     def leaderboard(self, request):
         user_id = request.query_params.get("user_id")
@@ -103,3 +93,16 @@ class QuizProgressViewSet(viewsets.ViewSet):
         courses = CourseModel.objects.filter(id__in=course_ids)
 
         return Response(LeaderBoardSerializer(courses, context={'user_id': user_id}, many=True).data)
+
+    @action(detail=True, methods=['get'])
+    def get_quiz_result(self, request, pk):
+        user_id = request.query_params.get("user_id")
+        try:
+            user = User.objects.get(id=user_id)
+        except Exception as e:
+            raise e
+
+        progress = QuizProgress.objects.filter(Q(user_id=user_id) & Q(course_id=pk)).first()
+        result = CalculatePercentage.get_quiz_result(progress)
+
+        return Response({"result": result})
