@@ -48,7 +48,7 @@ class QuizProgressViewSet(viewsets.ViewSet):
         checker = QuizProgress.objects.filter(Q(course_id=course.id) & Q(user_id=user.id))
         if checker:
             return Response({"QuizSubmitted": True})
-        return course
+        return course.id
 
     @classmethod
     def upgrade_balance(cls, user_id):
@@ -70,7 +70,7 @@ class QuizProgressViewSet(viewsets.ViewSet):
         grade = CalculatePercentage.calculate_grade(request.data["answers"])
 
         # Saving progress
-        data = {"course_id": course.id, "user_id": user_id, "grade": grade, "user_choices": request.data["answers"]}
+        data = {"course_id": course, "user_id": user_id, "grade": grade, "user_choices": request.data["answers"]}
         serializer = QuizProgressSerializer(data=data)
         serializer.is_valid()
         serializer.save()
