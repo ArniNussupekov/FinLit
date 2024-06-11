@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from rest_framework import serializers
 
 from progress.models import QuizProgress, CourseProgress, LessonProgress
@@ -47,7 +49,7 @@ class LeaderBoardSerializer(serializers.ModelSerializer):
     def get_grade(self, course):
         user_id = self.context['user_id']
         course_id = course.id
-        progress = QuizProgress.objects.filter(user_id=user_id)
+        progress = QuizProgress.objects.filter(Q(user_id=user_id) & Q(course_id=course_id)).first()
         the_progress = progress.get(course_id=course_id)
 
         return the_progress.grade
