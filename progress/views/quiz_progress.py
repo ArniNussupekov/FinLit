@@ -80,7 +80,7 @@ class QuizProgressViewSet(viewsets.ViewSet):
         progress = self.complete_quiz(user_id, course.id)
         CalculatePercentage.calculate_percentage(progress)
 
-        return Response(serializer.data)
+        return Response({"QuizComplete": True, "result": serializer.data})
 
     @action(detail=False, methods=['get'])
     def leaderboard(self, request):
