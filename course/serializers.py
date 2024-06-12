@@ -231,4 +231,4 @@ class QuizHistorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = QuizModel
-        fields = ['id', 'course_id', 'question', 'answers']
+        fields = ['id', 'course_id', 'question', 'answers', 'feedback_sent']
