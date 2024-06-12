@@ -49,17 +49,24 @@ class ProfileViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['post'])
     def send_email(self, request):
-        user = User.objects.get(id=11)
+        user_id = request.query_params.get("user_id", None)
+        unicode = 35
+
+        user = User.objects.get(id=user_id)
+        new_code = int(str(unicode) + str(user_id))
+        serializer = UserSerializer(instance=user, data={"unicode": new_code}, partial=True)
+        serializer.is_valid()
+        serializer.save()
 
         expiration = now() + timedelta(minutes=50)
         record = EmailVerification.objects.create(user=user, code=uuid.uuid4(), expiration=expiration)
 
-        content = {
-            "title": "Wanna Buy Some Niggers?",
-            "message": "Here is some niggers on sale"
+        message_content = {
+            "title": "FinLit Email Confirmation",
+            "message": f"Good day! Here is unicode to confirm your email: {user.unicode}"
         }
 
-        record.send_verification_email(content)
+        record.send_verification_email(message_content)
 
         return Response({"Success": True})
 

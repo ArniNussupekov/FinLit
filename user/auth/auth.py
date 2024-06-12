@@ -13,27 +13,9 @@ import jwt, datetime
 
 class RegisterView(APIView):
     def post(self, request):
-        unicode = 35
-
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
-        user = User.objects.get(id=serializer.data["id"])
-        new_code = int(str(unicode) + str(serializer.data["id"]))
-        serializer = UserSerializer(instance=user, data={"unicode": new_code}, partial=True)
-        serializer.is_valid()
-        serializer.save()
-
-        expiration = now() + timedelta(minutes=50)
-        record = EmailVerification.objects.create(user=user, code=uuid.uuid4(), expiration=expiration)
-
-        message_content = {
-            "title": "FinLit Email Confirmation",
-            "message": f"Good day! Here is unicode to confirm your email: {user.unicode}"
-        }
-
-        record.send_verification_email(message_content)
 
         return Response(serializer.data)
 
