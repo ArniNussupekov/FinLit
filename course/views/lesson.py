@@ -38,6 +38,15 @@ class LessonViewSet(viewsets.ViewSet):
         serializer.save()
 
         return Response({"message": True, "data": serializer.data})
+    
+    def delete(self, request, pk):
+        try:
+            lesson = LessonModel.objects.get(id=pk)
+        except Exception as e:
+            raise "Not Found"
+
+        lesson.delete()
+        return Response({"message": True})
 
     @action(detail=True, methods=["get"])
     def get_lessons(self, request, pk):
