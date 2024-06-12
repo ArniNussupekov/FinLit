@@ -38,7 +38,7 @@ class LessonViewSet(viewsets.ViewSet):
         serializer.save()
 
         return Response({"message": True, "data": serializer.data})
-    
+
     def delete(self, request, pk):
         try:
             lesson = LessonModel.objects.get(id=pk)

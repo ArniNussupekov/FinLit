@@ -2,7 +2,7 @@ from rest_framework import viewsets, pagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from course.models import QuizModel
+from course.models import QuizModel, QuizAnswerModel
 from course.serializers import QuizSerializer, QuizAnswerSerializer, QuizHistorySerializer
 
 
@@ -53,6 +53,13 @@ class QuizViewSet(viewsets.ViewSet):
         serializer.save()
 
         return Response({"success": True, "data": serializer.data})
+
+    @action(detail=True, methods=['delete'])
+    def remove_answers(self, request, pk):
+        answer = QuizAnswerModel.objects.get(id=pk)
+        answer.delete()
+
+        return Response({"success": True})
 
     def retrieve(self, request, pk):
         try:
