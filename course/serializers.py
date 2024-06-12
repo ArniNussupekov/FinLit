@@ -210,7 +210,12 @@ class QuizHistorySerializer(serializers.ModelSerializer):
     feedback_sent = serializers.SerializerMethodField(method_name='get_feedback_sent')
 
     def get_feedback_sent(self, quiz):
-        return True
+        user_id = self.context['user_id']
+        course_id = quiz.course_id
+
+        course_progress = CourseProgress.objects.filter(Q(user_id=user_id) & Q(course_id=course_id)).first()
+
+        return course_progress.feedback_sent
 
     def get_answers(self, quiz):
         user_id = self.context['user_id']

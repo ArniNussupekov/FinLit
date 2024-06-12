@@ -41,6 +41,8 @@ class CourseFeedbackViewSet(viewsets.ViewSet):
         user_id = request.query_params.get("user_id")
         progress = self.get_progress(user_id, pk)
 
+        request.data["feedback_sent"] = True
+
         serializer = CourseProgressSerializer(instance=progress, data=request.data, partial=True)
         serializer.is_valid()
         serializer.save()

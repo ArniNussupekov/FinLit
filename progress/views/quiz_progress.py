@@ -105,6 +105,10 @@ class QuizProgressViewSet(viewsets.ViewSet):
             raise e
 
         progress = QuizProgress.objects.filter(Q(user_id=user_id) & Q(course_id=pk)).first()
+
+        course_progress = CourseProgress.objects.filter(Q(user_id=user_id) & Q(course_id=progress.course_id))
+        feedback_sent = course_progress.feedback_sent
+
         result = CalculatePercentage.get_quiz_result(progress)
 
-        return Response({"result": result})
+        return Response({"result": result, "feedback_sent": feedback_sent})

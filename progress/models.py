@@ -17,6 +17,7 @@ class CourseProgress(models.Model):
     percent = models.FloatField(default=0)
     quiz_done = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)
+    feedback_sent = models.BooleanField(default=False)
 
     class Status(models.TextChoices):
         LEARNING = "LEARNING", "Learning"
