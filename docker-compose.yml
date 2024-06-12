@@ -16,7 +16,7 @@ services:
     environment:
       - PG_USER=postgres
       - PG_PASSWORD=postgres
-      - PG_DB=postgres
+      - PG_DB=postgres # choose postgres or production
       - PG_PORT=5432
       - PG_HOST=db
     volumes:
@@ -29,7 +29,7 @@ services:
     container_name: db
     image: postgres:16.2
     environment:
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=postgres # choose postgres or production
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
