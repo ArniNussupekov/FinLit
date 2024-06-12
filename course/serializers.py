@@ -207,6 +207,10 @@ class QuizSerializer(serializers.ModelSerializer):
 
 class QuizHistorySerializer(serializers.ModelSerializer):
     answers = serializers.SerializerMethodField(method_name="get_answers")
+    feedback_sent = serializers.SerializerMethodField(method_name='get_feedback_sent')
+
+    def get_feedback_sent(self, quiz):
+        return True
 
     def get_answers(self, quiz):
         user_id = self.context['user_id']
