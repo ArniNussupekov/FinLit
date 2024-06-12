@@ -18,14 +18,14 @@ class CourseModel(models.Model):
 class LessonModel(models.Model):
     lesson_num = models.IntegerField(null=True, blank=True)
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=500)
     url = models.CharField(null=True, max_length=500, default=None)
     course = models.ForeignKey(CourseModel, on_delete=models.CASCADE, null=True)
 
 
 class Accordion(models.Model):
     lesson = models.ForeignKey(LessonModel, on_delete=models.CASCADE)
-    question = models.CharField(max_length=255)
+    question = models.CharField(max_length=500)
     answer = models.TextField()
 
 
