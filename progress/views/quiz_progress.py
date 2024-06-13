@@ -106,7 +106,7 @@ class QuizProgressViewSet(viewsets.ViewSet):
 
         progress = QuizProgress.objects.filter(Q(user_id=user_id) & Q(course_id=pk)).first()
 
-        course_progress = CourseProgress.objects.filter(Q(user_id=user_id) & Q(course_id=progress.course_id))
+        course_progress = CourseProgress.objects.filter(Q(user_id=user_id) & Q(course_id=progress.course_id)).first()
         feedback_sent = course_progress.feedback_sent
 
         result = CalculatePercentage.get_quiz_result(progress)
